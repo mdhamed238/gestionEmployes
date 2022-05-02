@@ -36,11 +36,13 @@ public class EmployeForm extends JFrame {
 
 
         searchCombo = new JComboBox(new Object[] {
-                "search by nom",
-                "search by prenom",
-                "search by Id",
-                "search by NNI"
+                "chercher par nom",
+                "chercher par prenom",
+                "chercher par Id",
+                "chercher par NNI"
         });
+        searchCombo.setPreferredSize(new Dimension(180, 25));
+
 
         searchField = new JTextField(30);
         searchButton = new JButton("search");
@@ -48,7 +50,8 @@ public class EmployeForm extends JFrame {
 
         panelSearch = new JPanel();
         panelSearch.setBounds(350,20,400,30);
-        panelSearch.setLayout(new GridLayout(1, 2, 10, 10));
+        panelSearch.setLayout(new GridLayout(1, 3, 10, 10));
+        panelSearch.add(searchCombo);
         panelSearch.add(searchField);
         panelSearch.add(searchButton);
         add(panelSearch);
@@ -69,10 +72,10 @@ public class EmployeForm extends JFrame {
         lieu =new JTextField(10);
 
         lab6 = new JLabel("NNI");
-        NNI = new JTextField(7);
+        NNI = new JTextField(10);
 
         lab7 = new JLabel("Tel");
-        tel = new JTextField(10);
+        tel = new JTextField(13);
 
         lab8 = new JLabel("Salaire");
         salaire = new JTextField(10);
@@ -126,6 +129,9 @@ public class EmployeForm extends JFrame {
         String[] columnNames = {"ID", "Nom", "Prenom", "Date_Naissance",  "Lieu_Naissance", "NNI", "Tel", "Salaire"};
         model = new DefaultTableModel(columnNames, 0);
         table = new JTable(model);
+        table.getTableHeader().setPreferredSize(new Dimension(table.getTableHeader().getWidth(), 30));
+        table.getTableHeader().setFont(new Font("Tahoma", Font.BOLD, 12));
+        table.setRowHeight(30);
         JScrollPane scroll = new JScrollPane(table);
 
 
@@ -194,11 +200,19 @@ public class EmployeForm extends JFrame {
                 String filter = searchCombo.getSelectedItem().toString();
 
                 switch (filter) {
-                    case "search by nom":
+                    case "chercher par nom":
                         table_update(db.selectByFirstName(str));
+                        break;
+                    case "chercher par prenom":
+                        table_update(db.selectByLastName(str));
+                        break;
+                    case "chercher par Id":
+                        table_update(db.selectById(Integer.parseInt(str)));
+                        break;
+                    case "chercher par NNI":
+                        table_update(db.selectByNNI(str));
+                        break;
                 }
-
-
             }
         });
 
