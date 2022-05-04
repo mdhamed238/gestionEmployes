@@ -8,7 +8,7 @@ import java.awt.event.*;
 import java.sql.*;
 
 
-public class EmployeForm extends JFrame {
+public class EmployeForm extends JPanel {
 
     JPanel panelSearch, panelSaisie, paneltab, panelbtn;
     JTable  table;
@@ -19,8 +19,10 @@ public class EmployeForm extends JFrame {
     JTextField searchField, id, nom, prenom, date, lieu, NNI, tel, salaire;
     JComboBox searchCombo;
 
-    JButton searchButton, b1, b2, b3, b4, b5;
+    JButton searchButton, b1, b2, b3, b4;
 
+
+    boolean searchable = false;
 
 
     public EmployeForm(){
@@ -28,11 +30,13 @@ public class EmployeForm extends JFrame {
         table_update(null);
     }
 
-    public void initComponents() {
-        setTitle("Gestion des employes");
-        // setUndecorated(true);
-        setBounds(180,40,1000,640);
+    public EmployeForm(boolean searchable){
+        this.searchable = searchable;
+        initComponents();
+        table_update(null);
+    }
 
+    public void initComponents() {
 
 
         searchCombo = new JComboBox(new Object[] {
@@ -41,20 +45,25 @@ public class EmployeForm extends JFrame {
                 "chercher par Id",
                 "chercher par NNI"
         });
-        searchCombo.setPreferredSize(new Dimension(180, 25));
+        searchCombo.setPreferredSize(new Dimension(220, 25));
+
 
 
         searchField = new JTextField(30);
         searchButton = new JButton("search");
-        searchButton.setPreferredSize(new Dimension(120,25));
 
         panelSearch = new JPanel();
-        panelSearch.setBounds(350,20,400,30);
-        panelSearch.setLayout(new GridLayout(1, 3, 10, 10));
+        panelSearch.setBounds(200,20,500,30);
+        panelSearch.setLayout(new GridLayout(1, 3, 30, 10));
         panelSearch.add(searchCombo);
         panelSearch.add(searchField);
         panelSearch.add(searchButton);
-        add(panelSearch);
+
+        // Ajouter un paneau de recherche
+        if(this.searchable) {
+            add(panelSearch);
+        }
+
 
         lab1 = new JLabel("ID");
         id = new JTextField(10);
@@ -82,7 +91,7 @@ public class EmployeForm extends JFrame {
 
 
         panelSaisie = new JPanel();
-        panelSaisie.setBounds(5,90,360,420);
+        panelSaisie.setBounds(5,67,360,420);
         panelSaisie.setBorder(new LineBorder(Color.BLUE,2));
         panelSaisie.setLayout(new GridLayout(8,2, 10, 20));
 
@@ -122,7 +131,7 @@ public class EmployeForm extends JFrame {
 
 
         paneltab = new JPanel();
-        paneltab.setBounds(370, 90, 605, 420);
+        paneltab.setBounds(370, 67, 620, 420);
         paneltab.setBorder(new LineBorder(Color.BLUE, 2));
 
 
@@ -138,6 +147,7 @@ public class EmployeForm extends JFrame {
         paneltab.setLayout(new FlowLayout(FlowLayout.LEFT,1,1));
         paneltab.add(table.getTableHeader(), BorderLayout.NORTH);
         paneltab.add(table);
+        paneltab.add(scroll);
         add(paneltab);
 
         b1 = new JButton("Ajouter");
@@ -156,20 +166,15 @@ public class EmployeForm extends JFrame {
         b4.setPreferredSize(new Dimension(180,63));
         b4.setBackground(Color.WHITE);
         b4.setBorder(new LineBorder(Color.WHITE));
-        b5 = new JButton("Fermer");
-        b5.setPreferredSize(new Dimension(180,63));
-        b5.setBackground(Color.WHITE);
-        b5.setBorder(new LineBorder(Color.WHITE));
         panelbtn = new JPanel();
-        panelbtn.setLayout(new FlowLayout(FlowLayout.CENTER,10,7));
+        panelbtn.setLayout(new FlowLayout(FlowLayout.CENTER,40,7));
 
-        panelbtn.setBounds(5,515,970,80);
+        panelbtn.setBounds(5,490,985,80);
         panelbtn.setBorder(new LineBorder(Color.BLUE,2));
         panelbtn.add(b1);
         panelbtn.add(b2);
         panelbtn.add(b3);
         panelbtn.add(b4);
-        panelbtn.add(b5);
         add(panelbtn);
 
 
@@ -306,18 +311,9 @@ public class EmployeForm extends JFrame {
                 resetFields();
             }
         });
-        // button fermer
-        b5.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
-
 
         setLayout(null);
         setVisible(true);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
     }
 

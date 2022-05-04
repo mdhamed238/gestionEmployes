@@ -8,8 +8,8 @@ import java.awt.event.ActionListener;
 import gestionEmployes.*;
 
 public class MainForm extends JFrame {
-    JPanel paneltitre;
-    JLabel lab;
+
+    JLabel lblTitle;
 
     JMenuBar menuBar;
     JMenu menuDepartement, menuEmploye;
@@ -40,7 +40,7 @@ public class MainForm extends JFrame {
         menuDepartement.add(menuItemExit);
         menuEmploye = new JMenu("Employe");
         menuItemEmploye = new JMenuItem("Employe");
-        menuItemChercherEmployer = new JMenuItem("Chercher Employe");
+        menuItemChercherEmployer = new JMenuItem("Chercher Employé");
         menuEmploye.add(menuItemEmploye);
         menuEmploye.add(menuItemChercherEmployer);
 
@@ -50,8 +50,11 @@ public class MainForm extends JFrame {
         setJMenuBar(menuBar);
 
         mainPane = new JTabbedPane();
+        mainPane.setBounds(50, 20, 1020, 600);
         mainPane.setFont(new Font("Tahoma", Font.BOLD, 13));
-        JLabel lblTitle = new JLabel("Gestion des employes");
+
+
+        lblTitle = new JLabel("Gestion des employes");
         lblTitle.setForeground(Color.DARK_GRAY);
         lblTitle.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 42));
         lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
@@ -66,7 +69,17 @@ public class MainForm extends JFrame {
                 mainPane.removeAll();
                 mainPane.repaint();
                 EmployeForm empForm = new EmployeForm();
-                mainPane.add(empForm, "Employe");
+                mainPane.add("Employe", empForm);
+            }
+        });
+
+        menuItemChercherEmployer.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainPane.removeAll();
+                mainPane.repaint();
+                EmployeForm empForm = new EmployeForm(true);
+                mainPane.add("Chercher employé", empForm);
             }
         });
 
